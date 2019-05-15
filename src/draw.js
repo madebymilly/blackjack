@@ -1,6 +1,6 @@
 import { getHandVal, getMoves } from './blackjack.js';
 
-var draw = {
+const draw = {
 
 	drawBoard: function(game, $obj) {
 
@@ -8,9 +8,9 @@ var draw = {
 		$('#start').remove();
 
 		// draw players & bank:
-		var $playersDiv = $('<div class="players"></div>');
-		var $bankDiv = $('<div class="bank"><h3>Bank</h3></div>');
-		var $handDiv = $('<div class="hand"></div>');
+		const $playersDiv = $('<div class="players"></div>');
+		const $bankDiv = $('<div class="bank"><h3>Bank</h3></div>');
+		const $handDiv = $('<div class="hand"></div>');
 
 		$('.bank').remove();
 		$bankDiv.append($handDiv);
@@ -27,15 +27,15 @@ var draw = {
 
 	drawPlayers: function(game) {
 		$('.players').empty();
-		for (p in game.players) {
-			var p = game.players[p],
-					active = (p.active) ? 'active' : '',
-					win = (p.done) ? ((p.win) ? 'win' : '') : '',
-					busted = (p.busted) ? 'busted' : '';
-			if (!p.relatedTo) {
-				$('.players').append($('<div class="player player' + p.id + ' ' + active +' '+ win +' '+ busted +'" id="'+ p.id +'"><h3><span>'+ p.name +' </span><em>('+ p.stackSize +')</em></h3><div class="hand"></div><div class="buttons"></div></div>'));
+		for (let p in game.players) {
+			const pl = game.players[p],
+					active = (pl.active) ? 'active' : '',
+					win = (pl.done) ? ((pl.win) ? 'win' : '') : '',
+					busted = (pl.busted) ? 'busted' : '';
+			if (!pl.relatedTo) {
+				$('.players').append($('<div class="player player' + pl.id + ' ' + active +' '+ win +' '+ busted +'" id="'+ pl.id +'"><h3><span>'+ pl.name +' </span><em>('+ pl.stackSize +')</em></h3><div class="hand"></div><div class="buttons"></div></div>'));
 			} else {
-				$('.players').append($('<div class="player player' + p.id + ' ' + active +' '+ win +' '+ busted +'" id="'+ p.id +'"><h3><span>'+ p.name +' </span></h3><div class="hand"></div></div>'));
+				$('.players').append($('<div class="player player' + pl.id + ' ' + active +' '+ win +' '+ busted +'" id="'+ pl.id +'"><h3><span>'+ pl.name +' </span></h3><div class="hand"></div></div>'));
 			}
 		}
 	},
@@ -47,35 +47,35 @@ var draw = {
 	},
 
 	drawPlayerHand: function(game) {
-		for (p in game.players) {
-			var p = game.players[p];
-			$('.player' + p.id + ' .hand').empty();
-			for (c in p.hand) {
-				var c = p.hand[c];
-				$('.player' + p.id + ' .hand').append($('<div class="card">'+ c.rank + c.suit+' ('+ c.cardVal +')</div>'));
+		for (let p in game.players) {
+			var pl = game.players[p];
+			$('.player' + pl.id + ' .hand').empty();
+			for (let c in pl.hand) {
+				const card = pl.hand[c];
+				$('.player' + pl.id + ' .hand').append($('<div class="card">'+ card.rank + card.suit+' ('+ card.cardVal +')</div>'));
 			}
-			$('.player'+ p.id +' .hand').append($('<strong>'+ getHandVal( p.hand ) +'</strong>'));
+			$('.player'+ pl.id +' .hand').append($('<strong>'+ getHandVal( pl.hand ) +'</strong>'));
 		}
 	},
 
 	drawBankHand: function(game) {
-		for (c in game.bank.hand) {
-			var c = game.bank.hand[c],
-					hidden = (c.hidden) ? 'hidden' : '';
+		for (let c in game.bank.hand) {
+			const card = game.bank.hand[c],
+					hidden = (card.hidden) ? 'hidden' : '';
 				$('.bank .hand').append(
-					$('<div class="card ' + hidden + '">' + c.rank + c.suit+' ('+ c.cardVal +')</div>')
+					$('<div class="card ' + hidden + '">' + card.rank + card.suit+' ('+ card.cardVal +')</div>')
 				);
 		}
 		$('.bank .hand').append($('<strong>'+ getHandVal( game.bank.hand ) +'</strong>'));
 	},
 
 	drawPlayerMoves: function(game) {
-		for (p in game.players) {
-			var p = game.players[p];
-			if (p.active) {
-				var moves = getMoves(p);
-				for ( var m in moves ) {
-					$('.player' + p.id).append(
+		for (let p in game.players) {
+			const pl = game.players[p];
+			if (pl.active) {
+				const moves = getMoves(pl);
+				for ( let m in moves ) {
+					$('.player' + pl.id).append(
 						$('<button class="move" id="'+ moves[m] +'">'+ moves[m] +'</button>')
 					);
 				}
@@ -84,9 +84,9 @@ var draw = {
 	},
 
 	drawBets: function(game) {
-		for (var p in game.players) {
-			var stack = game.players[p].stackSize,
-					buttonsDiv = $('#'+game.players[p].id+'.player .buttons');
+		for (let p in game.players) {
+			const stack = game.players[p].stackSize,
+				buttonsDiv = $('#'+game.players[p].id+'.player .buttons');
 			buttonsDiv.append('<button class="bet" id="5">5</button>');
 			if (stack >= 10) {
 				buttonsDiv.append('<button class="bet" id="10">10</button>');
@@ -108,10 +108,10 @@ var draw = {
 	},
 
 	drawBet: function(game) {
-		for (p in game.players) {
-			var p = game.players[p];
-			$('.player'+ p.id +' .played-bet').remove();
-			$('.player'+ p.id).append('<div class="played-bet">Uw inzet: '+p.bet+'</div>');
+		for (let p in game.players) {
+			const pl = game.players[p];
+			$('.player'+ pl.id +' .played-bet').remove();
+			$('.player'+ pl.id).append('<div class="played-bet">Uw inzet: '+pl.bet+'</div>');
 		}
 	},
 

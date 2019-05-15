@@ -1,13 +1,13 @@
 import { draw } from './draw.js';
 
-let test = console.log;
+const test = console.log;
 
 const $obj = $( '#bj' );
 //test($obj);
 
 function changeHandCards( hand, newRank ) {
-	let cardValue = getCardValue( newRank );
-	let changedHand = hand.map( card => ({ rank: newRank, suit: card.suit, cardVal: cardValue, hidden: card.hidden, colour: card.colour }) );
+	const cardValue = getCardValue( newRank );
+	const changedHand = hand.map( card => ({ rank: newRank, suit: card.suit, cardVal: cardValue, hidden: card.hidden, colour: card.colour }) );
 	return changedHand;
 };
 
@@ -31,13 +31,13 @@ function dealCard( game ) {
 };
 
 function addCard(game, p, hidden) {
-	let newC = dealCard( game );
+	const newC = dealCard( game );
 	if (hidden) { newC.hidden = true; }
 	p.hand.push(newC);
 };
 
 function nextPlayersTurn(game, p) {
-	let nextPlayer = game.players[findPos(game.players, p) + 1] ? game.players[findPos(game.players, p) + 1] : false;
+	const nextPlayer = game.players[findPos(game.players, p) + 1] ? game.players[findPos(game.players, p) + 1] : false;
 	p.done = true;
 	p.active = false;
 	test(p);
@@ -56,7 +56,7 @@ function procesBet(p) {
 };
 
 function checkHandValue(game, p, bj) {
-	let hv = getHandVal( p['hand'] );
+	const hv = getHandVal( p['hand'] );
 	if ( hv == 21 && bj ) {
 		alert('blackjack!');
 		p.done = true;
@@ -75,7 +75,7 @@ function showBankCards( bank ) {
 
 export function getHandVal( hand ) {
 	let hv = 0;
-	for (var c in hand) {
+	for (let c in hand) {
 		hv += hand[c].cardVal;
 	}
 	return hv;
@@ -138,7 +138,7 @@ function addPlayer( players, player ) {
 }
 
 function createPlayer( id, name, stackSize, relatedTo, bet ) {
-	let player = {
+	const player = {
 		id: id,
 		name: name,
 		stackSize: stackSize,
@@ -174,12 +174,12 @@ const play = function(game, p, move) {
 			draw.init(game, $obj);
 			break;
 		case 'split':
-			let playerPlus = createPlayer(p.id + 1, p.name, p.stackSize, p.id, p.bet);
+			const playerPlus = createPlayer(p.id + 1, p.name, p.stackSize, p.id, p.bet);
 			// TODO: kan niet id + 1 zijn, want wat bij nog een keer splitsen?
 			game.players.push(playerPlus);
 			procesBet(p);
 			// last card of p goes to playerPlus:
-			let cardToMove = p.hand[1];
+			const cardToMove = p.hand[1];
 			playerPlus.hand.push(cardToMove);
 			p.hand.splice(1, 1);
 			addCard(game, p);
@@ -192,7 +192,7 @@ const play = function(game, p, move) {
 };
 
 const finishHand = function(game) {
-	var b = game.bank;
+	const b = game.bank;
 	// check if bank has blackjack
 	if ( getHandVal(b.hand) == 21 ) {
 		test('players lose');
@@ -233,7 +233,7 @@ const finishHand = function(game) {
 
 const dealHands = function(game) {
 
-		var b = game.bank;
+		const b = game.bank;
 
 		// deal 1st card
 		game.players.forEach( function( player, index ) {
@@ -298,7 +298,7 @@ const startRound = function( game ) {
 		}
 
 		// check if all players have bet:
-		var allBet = true;
+		let allBet = true;
 		for (p in game.players) {
 			if (game.players[p].bet == 0) {
 				allBet = false;
@@ -340,7 +340,7 @@ const createGame = function() {
 
 const blackjack = {
 	init: function() {
-		var game = createGame();
+		const game = createGame();
 		$( '#start' ).on( 'click', function( e ) {
 			e.preventDefault();
 			start( game );
